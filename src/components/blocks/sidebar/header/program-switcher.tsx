@@ -20,8 +20,8 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/shadcn/sidebar';
-
 import { Program } from '@/lib/data/nav-data';
+import { useAccentClass } from '@/lib/providers/accent-provider';
 import { cn } from '@/lib/utils';
 
 interface ProgramSwitcherProps {
@@ -46,7 +46,14 @@ export function ProgramSwitcher({
 							size='lg'
 							className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
 						>
-							<div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
+							<div
+								className={cn(
+									'flex aspect-square size-8 items-center justify-center rounded-lg',
+									useAccentClass({
+										withText: true,
+									})
+								)}
+							>
 								<activeProgram.logo className='size-4' />
 							</div>
 							<div className='grid flex-1 text-left text-sm leading-tight'>
@@ -75,7 +82,10 @@ export function ProgramSwitcher({
 									'gap-2 p-2 cursor-pointer',
 									`${
 										activeProgram.slug === program.slug &&
-										'border bg-accent text-accent-foreground'
+										useAccentClass({
+											withText: true,
+											withHover: true,
+										})
 									}`
 								)}
 							>

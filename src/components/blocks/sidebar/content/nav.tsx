@@ -20,6 +20,8 @@ import {
 	SidebarMenuSubItem,
 } from '@/components/ui/shadcn/sidebar';
 import { NavItem } from '@/lib/data/nav-data';
+import { cn } from '@/lib/utils';
+import { useAccentClass } from '@/lib/providers/accent-provider';
 
 interface NavProps {
 	items: NavItem[];
@@ -58,7 +60,16 @@ export function Nav({ items, baseSlug, currentPath }: NavProps) {
 														<a
 															href={href}
 															className={
-																currentPath === href ? 'bg-sidebar-accent border' : ''
+																currentPath === href
+																	? cn(
+																			'bg-sidebar-accent border ',
+																			useAccentClass({
+																				withBackground: false,
+																				withBorder: true,
+																				withHover: true,
+																			})
+																	  )
+																	: ''
 															}
 														>
 															<span>{subItem.title}</span>

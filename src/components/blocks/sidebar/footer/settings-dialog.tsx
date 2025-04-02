@@ -25,18 +25,16 @@ import {
 	BreadcrumbItem,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
-	BreadcrumbLink,
 } from '@/components/ui/shadcn/breadcrumb';
-import { data } from '@/lib/data/settings-data';
+import { Separator } from '@/components/ui/shadcn/separator';
+import { settingsData } from '@/lib/data/settings-data';
+import { useAccentClass } from '@/lib/providers/accent-provider';
+
+import { Settings } from 'lucide-react';
 
 export function SettingsDialog() {
 	const [open, setOpen] = useState(false);
-
-	// default pick
-	const [selectedSection, setSelectedSection] =
-		useState<string>('General');
-
-	// Look up the component for the selected section:
+	const [selectedSection, setSelectedSection] = useState<string>('General');
 	const PanelComponent =
 		settingsRegistry[selectedSection] ?? (() => <p>No settings found.</p>);
 
@@ -46,11 +44,18 @@ export function SettingsDialog() {
 			onOpenChange={setOpen}
 		>
 			<DialogTrigger asChild>
-				<Button size='sm'>Settings</Button>
+				<Button
+					size='sm'
+					className={useAccentClass({ withText: true, withHover: true })}
+				>
+					<Settings />
+				</Button>
 			</DialogTrigger>
 			<DialogContent className='overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]'>
 				<DialogTitle className='sr-only'>Settings</DialogTitle>
-				<DialogDescription className='sr-only'>...</DialogDescription>
+				<DialogDescription className='sr-only'>
+					All notable personalization
+				</DialogDescription>
 
 				<SidebarProvider className='items-start'>
 					<Sidebar
@@ -61,13 +66,18 @@ export function SettingsDialog() {
 							<SidebarGroup>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{data.nav.map((item) => {
+										{settingsData.nav.map((item) => {
 											const isActive = item.name === selectedSection;
 											return (
 												<SidebarMenuItem key={item.name}>
 													<SidebarMenuButton
 														asChild
 														isActive={isActive}
+														className={
+															isActive
+																? useAccentClass({ withBorder: true })
+																: ''
+														}
 													>
 														<button
 															type='button'
@@ -93,7 +103,9 @@ export function SettingsDialog() {
 								<Breadcrumb>
 									<BreadcrumbList>
 										<BreadcrumbItem className='hidden md:block'>
-											<BreadcrumbLink href='#'>Settings</BreadcrumbLink>
+											<BreadcrumbPage className='text-muted-foreground'>
+												Settings
+											</BreadcrumbPage>
 										</BreadcrumbItem>
 										<BreadcrumbSeparator className='hidden md:block' />
 										<BreadcrumbItem>
@@ -103,7 +115,7 @@ export function SettingsDialog() {
 								</Breadcrumb>
 							</div>
 						</header>
-
+						<Separator />
 						<div className='flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0'>
 							<PanelComponent />
 						</div>

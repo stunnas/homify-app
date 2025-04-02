@@ -1,6 +1,6 @@
 import { Settings, Eye, Bell, BookOpen, Info } from 'lucide-react';
 
-export const data = {
+export const settingsData = {
 	nav: [
 		{ name: 'General', icon: Settings },
 		{ name: 'Appearance', icon: Eye },
