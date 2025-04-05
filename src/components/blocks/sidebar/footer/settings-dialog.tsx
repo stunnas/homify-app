@@ -30,11 +30,14 @@ import { Separator } from '@/components/ui/shadcn/separator';
 import { useAccent } from '@/lib/providers/accent-provider';
 import { SETTINGS_DATA } from '@/lib/data/settings-data';
 import { Settings } from 'lucide-react';
+import { useSidebar } from '@/components/ui/shadcn/sidebar';
 
 export function SettingsDialog() {
 	const [open, setOpen] = useState(false);
 	const [selectedSection, setSelectedSection] = useState<string>('General');
 	const { currentAccent } = useAccent();
+	const { state } = useSidebar();
+	const isCollapsed = state === 'collapsed';
 	const PanelComponent =
 		settingsRegistry[selectedSection] ?? (() => <p>No settings found.</p>);
 
@@ -54,8 +57,9 @@ export function SettingsDialog() {
 							<Button
 								size='sm'
 								variant={currentAccent === 'default' ? 'default' : 'accent'}
+								className='flex justify-center items-center'
 							>
-								<Settings />
+								{!isCollapsed && 'Settings'} <Settings />
 							</Button>
 						</DialogTrigger>
 					</SidebarMenuButton>
