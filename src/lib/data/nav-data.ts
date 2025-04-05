@@ -1,4 +1,4 @@
-import { Home, Bot, TimerReset, LayoutDashboard } from 'lucide-react';
+import { Home, Bot, TimerReset, Map, LayoutDashboard } from 'lucide-react';
 
 export interface Program {
 	name: string;
@@ -19,7 +19,7 @@ export interface NavSubItem {
 	url: string;
 }
 
-export const programs: Program[] = [
+export const PROGRAMS: Program[] = [
 	{
 		name: 'Home',
 		slug: 'home',
@@ -31,13 +31,18 @@ export const programs: Program[] = [
 		logo: Bot,
 	},
 	{
-		name: 'Pomodoro',
-		slug: 'pomodoro',
+		name: 'Pomodoro Timer',
+		slug: 'pomodoro-timer',
 		logo: TimerReset,
+	},
+	{
+		name: 'Github Diagrams',
+		slug: 'github-diagrams',
+		logo: Map,
 	},
 ];
 
-export const navData: Record<Program['name'], NavItem[]> = {
+export const NAV_DATA: Record<Program['name'], NavItem[]> = {
 	'Home': [
 		{
 			title: 'Dashboard',
@@ -83,7 +88,7 @@ export const navData: Record<Program['name'], NavItem[]> = {
 		},
 	],
 
-	'Pomodoro': [
+	'Pomodoro Timer': [
 		{
 			title: 'Dashboard',
 			url: 'dashboard',
@@ -97,15 +102,29 @@ export const navData: Record<Program['name'], NavItem[]> = {
 			],
 		},
 	],
+	'Github Diagrams': [
+		{
+			title: 'Dashboard',
+			url: 'dashboard',
+			icon: LayoutDashboard,
+			isActive: true,
+			items: [
+				{
+					title: 'Integrator',
+					url: 'integrator',
+				},
+			],
+		},
+	],
 };
 
 export function getDefaultRouteForProgram(programSlug: string): string {
-	const program = programs.find((p) => p.slug === programSlug);
+	const program = PROGRAMS.find((p) => p.slug === programSlug);
 	if (!program) {
 		return '/'; // fallback or throw
 	}
 
-	const items = navData[program.name];
+	const items = NAV_DATA[program.name];
 	if (!items || items.length === 0) {
 		return `/${programSlug}`;
 	}
@@ -131,11 +150,11 @@ export function getDefaultRouteForProgram(programSlug: string): string {
 export function buildFullPathMap(): Record<string, string> {
 	const pathMap: Record<string, string> = {};
 
-	for (const program of programs) {
+	for (const program of PROGRAMS) {
 		pathMap[`/${program.slug}`] = program.name;
 
 		// For each NavItem:
-		const items = navData[program.name] || [];
+		const items = NAV_DATA[program.name] || [];
 		for (const item of items) {
 			const itemPath = `/${program.slug}/${item.url}`;
 			pathMap[itemPath] = item.title; // e.g. "/ai-bridge/dashboard" => "Dashboard"

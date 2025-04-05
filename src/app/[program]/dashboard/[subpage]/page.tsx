@@ -1,7 +1,7 @@
 // app/[program]/dashboard/[subpage]/page.tsx
 
 import { notFound } from 'next/navigation';
-import { programs, navData } from '@/lib/data/nav-data';
+import { PROGRAMS, NAV_DATA } from '@/lib/data/nav-data';
 
 export default function ProgramDashboardSubpage({
 	params,
@@ -11,13 +11,13 @@ export default function ProgramDashboardSubpage({
 	const { program, subpage } = params;
 
 	// 1) Check if the program is valid:
-	const foundProgram = programs.find((p) => p.slug === program);
+	const foundProgram = PROGRAMS.find((p) => p.slug === program);
 	if (!foundProgram) {
 		notFound();
 	}
 
 	// 2) Check if this subpage belongs to that program’s nav data:
-	const subLinks = navData[foundProgram!.name]?.[0]?.items || [];
+	const subLinks = NAV_DATA[foundProgram!.name]?.[0]?.items || [];
 	const isValidSubpage = subLinks.some((item) => item.url === subpage);
 	if (!isValidSubpage) {
 		notFound();
@@ -46,10 +46,17 @@ export default function ProgramDashboardSubpage({
 			default:
 				notFound();
 		}
-	} else if (program === 'pomodoro') {
+	} else if (program === 'pomodoro-timer') {
 		switch (subpage) {
 			case 'sessions':
 				return <div>Sessions UI for Pomodoro</div>;
+			default:
+				notFound();
+		}
+	} else if (program === 'github-diagrams') {
+		switch (subpage) {
+			case'integrator':
+				return <div>Integrator UI for Github Diagrams</div>;
 			default:
 				notFound();
 		}

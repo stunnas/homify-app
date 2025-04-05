@@ -1,12 +1,15 @@
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
 import { Label } from '@/components/ui/shadcn/label';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { useTheme } from 'next-themes';
-import { themeOptions, accentOptions } from '@/lib/data/appearance-data';
-import { useAccent, useAccentClass } from '@/lib/providers/accent-provider';
+import {
+	themeOptions,
+	accentOptions,
+} from '@/lib/data/settings/appearance-data';
+import { transitionClass, useAccent } from '@/lib/providers/accent-provider';
 import { Check } from 'lucide-react';
+import { Button } from '@/components/ui/shadcn/button';
 
 export function AppearanceSettings() {
 	const { theme, setTheme } = useTheme();
@@ -64,17 +67,18 @@ export function AppearanceSettings() {
 				<div className='grid grid-cols-2 gap-3 pt-2'>
 					{accentOptions.map((color) => {
 						const isActive = currentAccent === color.value;
-						const borderAccentClass = useAccentClass({
-							withBackground: false,
-							withBorder: true,
-						});
 						return (
 							<button
 								key={color.value}
 								onClick={() => handleAccentColorChange(color.value)}
 								className={cn(
-									'flex items-center justify-between rounded-md border p-3 hover:bg-muted',
-									isActive && borderAccentClass
+									'flex items-center justify-between rounded-md border-2 p-2',
+									transitionClass,
+									isActive
+										? currentAccent === 'default'
+											? 'border-primary'
+											: 'border-accent'
+										: color.hoverClass
 								)}
 							>
 								<div className='flex items-center gap-2'>
