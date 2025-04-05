@@ -20,7 +20,7 @@ import {
 	useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import { Program } from '@/lib/data/nav-data';
-import { useAccent } from '@/lib/providers/accent-provider';
+import { transitionClass, useAccent } from '@/lib/providers/accent-provider';
 import { cn } from '@/lib/utils';
 
 interface ProgramSwitcherProps {
@@ -50,6 +50,7 @@ export function ProgramSwitcher({
 							<div
 								className={cn(
 									'flex aspect-square size-8 items-center justify-center rounded-lg',
+									transitionClass,
 									`${
 										currentAccent === 'default'
 											? 'bg-primary text-background'
