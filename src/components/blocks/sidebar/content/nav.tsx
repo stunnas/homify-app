@@ -41,7 +41,7 @@ export function Nav({ items, baseSlug, currentPath }: NavProps) {
 	const { state } = useSidebar();
 	const isCollapsed = state === 'collapsed';
 	const { currentAccent } = useAccent();
-	
+
 	return (
 		<SidebarGroup>
 			<SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -65,10 +65,7 @@ export function Nav({ items, baseSlug, currentPath }: NavProps) {
 										>
 											<div
 												className={cn(
-													'flex aspect-square size-8 items-center justify-center rounded-lg',
-													// currentAccent === 'default'
-													// 	? 'bg-primary text-background'
-													// 	: 'bg-accent text-accent-foreground'
+													'flex aspect-square size-8 items-center justify-center rounded-lg'
 												)}
 											>
 												<item.icon className='size-4' />
@@ -113,7 +110,7 @@ export function Nav({ items, baseSlug, currentPath }: NavProps) {
 									defaultOpen={item.isActive}
 									className='group/collapsible'
 								>
-									<>
+									<div>
 										<CollapsibleTrigger asChild>
 											<SidebarMenuButton tooltip={item.title}>
 												{Icon && <Icon />}
@@ -142,7 +139,7 @@ export function Nav({ items, baseSlug, currentPath }: NavProps) {
 												})}
 											</SidebarMenuSub>
 										</CollapsibleContent>
-									</>
+									</div>
 								</Collapsible>
 							)}
 						</SidebarMenuItem>
