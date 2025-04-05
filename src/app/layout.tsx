@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/shadcn/separator';
 import { DynamicBreadcrumbs } from '@/components/blocks/sidebar/content/dynamic-breadcrumbs';
 import { ThemeProvider } from '@/lib/providers/theme-provider';
 import { AccentProvider } from '@/lib/providers/accent-provider';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,7 +30,7 @@ export default function RootLayout({
 			lang='en'
 			suppressHydrationWarning
 		>
-			<body className={inter.className}>
+			<body className={cn(inter.className, '')}>
 				<ThemeProvider
 					attribute='class'
 					defaultTheme='system'

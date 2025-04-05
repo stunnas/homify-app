@@ -27,14 +27,14 @@ import {
 	BreadcrumbSeparator,
 } from '@/components/ui/shadcn/breadcrumb';
 import { Separator } from '@/components/ui/shadcn/separator';
-import { settingsData } from '@/lib/data/settings-data';
-import { useAccentClass } from '@/lib/providers/accent-provider';
-
+import { useAccent } from '@/lib/providers/accent-provider';
+import { SETTINGS_DATA } from '@/lib/data/settings-data';
 import { Settings } from 'lucide-react';
 
 export function SettingsDialog() {
 	const [open, setOpen] = useState(false);
 	const [selectedSection, setSelectedSection] = useState<string>('General');
+	const { currentAccent } = useAccent();
 	const PanelComponent =
 		settingsRegistry[selectedSection] ?? (() => <p>No settings found.</p>);
 
@@ -43,14 +43,24 @@ export function SettingsDialog() {
 			open={open}
 			onOpenChange={setOpen}
 		>
-			<DialogTrigger asChild>
-				<Button
-					size='sm'
-					className={useAccentClass({ withText: true, withHover: true })}
-				>
-					<Settings />
-				</Button>
-			</DialogTrigger>
+			<SidebarMenu>
+				<SidebarMenuItem>
+					<SidebarMenuButton
+						asChild
+						tooltip='Settings'
+						size='sm'
+					>
+						<DialogTrigger asChild>
+							<Button
+								size='sm'
+								variant={currentAccent === 'default' ? 'default' : 'accent'}
+							>
+								<Settings />
+							</Button>
+						</DialogTrigger>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+			</SidebarMenu>
 			<DialogContent className='overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]'>
 				<DialogTitle className='sr-only'>Settings</DialogTitle>
 				<DialogDescription className='sr-only'>
@@ -60,23 +70,21 @@ export function SettingsDialog() {
 				<SidebarProvider className='items-start'>
 					<Sidebar
 						collapsible='none'
-						className='hidden md:flex'
+						className='flex'
 					>
 						<SidebarContent>
 							<SidebarGroup>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{settingsData.nav.map((item) => {
+										{SETTINGS_DATA.nav.map((item) => {
 											const isActive = item.name === selectedSection;
 											return (
 												<SidebarMenuItem key={item.name}>
 													<SidebarMenuButton
 														asChild
 														isActive={isActive}
-														className={
-															isActive
-																? useAccentClass({ withBorder: true })
-																: ''
+														variant={
+															currentAccent === 'default' ? 'default' : 'accent'
 														}
 													>
 														<button

@@ -10,7 +10,6 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
@@ -21,7 +20,7 @@ import {
 	useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import { Program } from '@/lib/data/nav-data';
-import { useAccentClass } from '@/lib/providers/accent-provider';
+import { useAccent } from '@/lib/providers/accent-provider';
 import { cn } from '@/lib/utils';
 
 interface ProgramSwitcherProps {
@@ -36,7 +35,7 @@ export function ProgramSwitcher({
 	onProgramChange,
 }: ProgramSwitcherProps) {
 	const { isMobile } = useSidebar();
-
+	const { currentAccent } = useAccent();
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
@@ -44,14 +43,18 @@ export function ProgramSwitcher({
 					<DropdownMenuTrigger asChild>
 						<SidebarMenuButton
 							size='lg'
+							tooltip={activeProgram.name + ' / Switch Program'}
+							variant={currentAccent === 'default' ? 'default' : 'accent'}
 							className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
 						>
 							<div
 								className={cn(
 									'flex aspect-square size-8 items-center justify-center rounded-lg',
-									useAccentClass({
-										withText: true,
-									})
+									`${
+										currentAccent === 'default'
+											? 'bg-primary text-background'
+											: 'bg-accent text-accent-foreground'
+									}`
 								)}
 							>
 								<activeProgram.logo className='size-4' />
@@ -74,29 +77,31 @@ export function ProgramSwitcher({
 							Programs
 						</DropdownMenuLabel>
 
-						{programs.map((program, index) => (
-							<DropdownMenuItem
-								key={program.name}
-								onClick={() => onProgramChange(program)}
-								className={cn(
-									'gap-2 p-2 cursor-pointer',
-									`${
-										activeProgram.slug === program.slug &&
-										useAccentClass({
-											withText: true,
-											withHover: true,
-										})
-									}`
-								)}
-							>
-								<div className='flex size-6 items-center justify-center rounded-sm border'>
-									<program.logo className='size-4 shrink-0' />
-								</div>
-								{program.name}
-								<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-							</DropdownMenuItem>
-						))}
-						<DropdownMenuSeparator />
+						{programs.map((program, index) => {
+							const isActive = activeProgram.slug === program.slug;
+							return (
+								<DropdownMenuItem
+									key={program.name}
+									onClick={() => onProgramChange(program)}
+									className={cn(
+										'gap-2 p-2 m-2 cursor-pointer border',
+										`${
+											isActive
+												? currentAccent === 'default'
+													? 'bg-primary text-background'
+													: 'bg-accent text-accent-foreground'
+												: ''
+										}`
+									)}
+								>
+									<div className='flex size-6 items-center justify-center rounded-sm'>
+										<program.logo className='size-4 shrink-0' />
+									</div>
+									{program.name}
+									<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+								</DropdownMenuItem>
+							);
+						})}
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</SidebarMenuItem>

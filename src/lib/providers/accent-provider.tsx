@@ -5,11 +5,11 @@ import React, { useEffect, useState, createContext, useContext } from 'react';
 import {
 	accentColorMap,
 	mutedAccentColorMap,
-} from '@/lib/data/appearance-data';
+} from '@/lib/data/settings/appearance-data';
 
-// We expose a context so other components can read the "currentAccent"
+// Exposed context so other components can read the "currentAccent"
 interface AccentContextValue {
-	currentAccent: string; // e.g. "default", "blue", "purple"
+	currentAccent: string | null;
 	setAccent: (accent: string) => void;
 }
 
@@ -63,7 +63,7 @@ export function updateRootAccent(accent: string) {
 	// If you want the scrollbar to match the main accent,
 	// set --scrollbar = mainHsl, --scrollbar-foreground = mainFg or something else
 	docEl.style.setProperty('--scrollbar', mainHsl);
-	docEl.style.setProperty('--scrollbar-foreground', mainFg);
+	docEl.style.setProperty('--scrollbar-foreground', mutedHsl);
 }
 
 // Very rough check if HSL lightness > 70 => black text, else white
@@ -76,7 +76,7 @@ function pickForegroundForAccent(hsl: string) {
 }
 
 export function AccentProvider({ children }: { children: React.ReactNode }) {
-	const [accent, setAccent] = useState<string>('default');
+	const [accent, setAccent] = useState<string | null>(null);
 
 	useEffect(() => {
 		const stored = getStoredAccent();
@@ -102,37 +102,4 @@ export function useAccent() {
 	return useContext(AccentContext);
 }
 
-export function useAccentClass({
-	withBackground = true,
-	withText = false,
-	withHover = false,
-	withBorder = false,
-}: {
-	withBackground?: boolean;
-	withText?: boolean;
-	withHover?: boolean;
-	withBorder?: boolean;
-} = {}): string {
-	const { currentAccent } = useAccent();
-	const isDefault = currentAccent === 'default';
-
-	let base = '';
-
-	if (withBackground) {
-		base += isDefault ? 'bg-primary' : 'bg-accent';
-	}
-
-	if (withText) {
-		base += isDefault ? ' text-primary-foreground' : ' text-accent-foreground';
-	}
-
-	if (withBorder) {
-		base += isDefault ? ' border border-primary' : ' border border-accent';
-	}
-
-	if (withHover) {
-		base += isDefault ? '' : ' hover:bg-mutedAccent';
-	}
-
-	return base.trim();
-}
+export const transitionClass = 'transition-colors duration-300 ease-in-out';

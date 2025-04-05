@@ -19,9 +19,17 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from '@/components/ui/shadcn/sidebar';
-import { NavItem } from '@/lib/data/nav-data';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+	DropdownMenuLabel,
+} from '@/components/ui/shadcn/dropdown-menu';
+import { useSidebar } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
-import { useAccentClass } from '@/lib/providers/accent-provider';
+import { useAccent } from '@/lib/providers/accent-provider';
+import { NavItem } from '@/lib/data/nav-data';
 
 interface NavProps {
 	items: NavItem[];
@@ -30,58 +38,114 @@ interface NavProps {
 }
 
 export function Nav({ items, baseSlug, currentPath }: NavProps) {
+	const { state } = useSidebar();
+	const isCollapsed = state === 'collapsed';
+	const { currentAccent } = useAccent();
+	
 	return (
 		<SidebarGroup>
 			<SidebarGroupLabel>Platform</SidebarGroupLabel>
 			<SidebarMenu>
 				{items.map((item) => {
+					const hasChildren = item.items && item.items.length > 0;
+					const Icon = item.icon;
+					const dropdownItems = item.items ?? [];
 					return (
-						<Collapsible
-							key={item.title}
-							asChild
-							defaultOpen={item.isActive}
-							className='group/collapsible'
-						>
-							<SidebarMenuItem>
-								<CollapsibleTrigger asChild>
-									<SidebarMenuButton tooltip={item.title}>
-										{item.icon && <item.icon />}
-										<span>{item.title}</span>
-										<ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
-									</SidebarMenuButton>
-								</CollapsibleTrigger>
-								<CollapsibleContent>
-									<SidebarMenuSub>
-										{(item.items ?? []).map((subItem) => {
+						<SidebarMenuItem key={item.title}>
+							{isCollapsed && hasChildren ? (
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<SidebarMenuButton
+											size='lg'
+											tooltip={item.title}
+											variant={
+												currentAccent === 'default' ? 'default' : 'accent'
+											}
+											className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
+										>
+											<div
+												className={cn(
+													'flex aspect-square size-8 items-center justify-center rounded-lg',
+													// currentAccent === 'default'
+													// 	? 'bg-primary text-background'
+													// 	: 'bg-accent text-accent-foreground'
+												)}
+											>
+												<item.icon className='size-4' />
+											</div>
+										</SidebarMenuButton>
+									</DropdownMenuTrigger>
+
+									<DropdownMenuContent
+										className='w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg'
+										align='start'
+										side='right'
+										sideOffset={4}
+									>
+										<DropdownMenuLabel className='text-xs text-muted-foreground'>
+											{item.title}
+										</DropdownMenuLabel>
+
+										{item.items!.map((subItem, index) => {
 											const href = `/${baseSlug}/${item.url}/${subItem.url}`;
+											const isActive = currentPath === href;
 											return (
-												<SidebarMenuSubItem key={subItem.title}>
-													<SidebarMenuSubButton asChild>
-														<a
-															href={href}
-															className={
-																currentPath === href
-																	? cn(
-																			'bg-sidebar-accent border ',
-																			useAccentClass({
-																				withBackground: false,
-																				withBorder: true,
-																				withHover: true,
-																			})
-																	  )
-																	: ''
-															}
-														>
-															<span>{subItem.title}</span>
-														</a>
-													</SidebarMenuSubButton>
-												</SidebarMenuSubItem>
+												<DropdownMenuItem
+													key={subItem.title}
+													asChild
+													className={cn(
+														'gap-2 p-2 m-2 cursor-pointer border',
+														isActive &&
+															(currentAccent === 'default'
+																? 'bg-primary text-background'
+																: 'bg-accent text-accent-foreground')
+													)}
+												>
+													<a href={href}>{subItem.title}</a>
+												</DropdownMenuItem>
 											);
 										})}
-									</SidebarMenuSub>
-								</CollapsibleContent>
-							</SidebarMenuItem>
-						</Collapsible>
+									</DropdownMenuContent>
+								</DropdownMenu>
+							) : (
+								<Collapsible
+									asChild
+									defaultOpen={item.isActive}
+									className='group/collapsible'
+								>
+									<>
+										<CollapsibleTrigger asChild>
+											<SidebarMenuButton tooltip={item.title}>
+												{Icon && <Icon />}
+												<span>{item.title}</span>
+												<ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
+											</SidebarMenuButton>
+										</CollapsibleTrigger>
+										<CollapsibleContent>
+											<SidebarMenuSub>
+												{dropdownItems.map((subItem) => {
+													const href = `/${baseSlug}/${item.url}/${subItem.url}`;
+													const isActive = currentPath === href;
+													return (
+														<SidebarMenuSubItem key={subItem.title}>
+															<SidebarMenuSubButton
+																asChild
+																isActive={isActive}
+																variant={isActive ? 'accent' : 'default'}
+															>
+																<a href={href}>
+																	<span>{subItem.title}</span>
+																</a>
+															</SidebarMenuSubButton>
+														</SidebarMenuSubItem>
+													);
+												})}
+											</SidebarMenuSub>
+										</CollapsibleContent>
+									</>
+								</Collapsible>
+							)}
+						</SidebarMenuItem>
 					);
 				})}
 			</SidebarMenu>
