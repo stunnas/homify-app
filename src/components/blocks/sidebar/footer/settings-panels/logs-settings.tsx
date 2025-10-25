@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/shadcn/switch';
 import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Download } from 'lucide-react';
-import { useAccent } from '@/lib/providers/accent-provider';
+import { useAccent } from '@/components/providers/accent-provider';
 import { LOGS_SETTINGS_SECTIONS } from '@/lib/data/settings/logs-data';
 
 export function LogsSettings() {

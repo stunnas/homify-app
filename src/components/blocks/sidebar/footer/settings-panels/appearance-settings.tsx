@@ -7,9 +7,8 @@ import {
 	themeOptions,
 	accentOptions,
 } from '@/lib/data/settings/appearance-data';
-import { transitionClass, useAccent } from '@/lib/providers/accent-provider';
+import { transitionClass, useAccent } from '@/components/providers/accent-provider';
 import { Check } from 'lucide-react';
-import { Button } from '@/components/ui/shadcn/button';
 
 export function AppearanceSettings() {
 	const { theme, setTheme } = useTheme();

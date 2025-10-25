@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/shadcn/sidebar';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { DynamicBreadcrumbs } from '@/components/blocks/sidebar/content/dynamic-breadcrumbs';
-import { ThemeProvider } from '@/lib/providers/theme-provider';
-import { AccentProvider } from '@/lib/providers/accent-provider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
+import { AccentProvider } from '@/components/providers/accent-provider';
 import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });

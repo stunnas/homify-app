@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 
 import { cn } from '@/lib/utils';
-import { useAccent } from '@/lib/providers/accent-provider';
+import { useAccent } from '@/components/providers/accent-provider';
 
 const Switch = React.forwardRef<
 	React.ElementRef<typeof SwitchPrimitives.Root>,

@@ -27,7 +27,7 @@ import {
 	BreadcrumbSeparator,
 } from '@/components/ui/shadcn/breadcrumb';
 import { Separator } from '@/components/ui/shadcn/separator';
-import { useAccent } from '@/lib/providers/accent-provider';
+import { useAccent } from '@/components/providers/accent-provider';
 import { SETTINGS_DATA } from '@/lib/data/settings-data';
 import { Settings } from 'lucide-react';
 import { useSidebar } from '@/components/ui/shadcn/sidebar';

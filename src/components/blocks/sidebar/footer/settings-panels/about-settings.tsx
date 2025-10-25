@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { ExternalLink, FileText, Copy } from 'lucide-react';
-import { useAccent } from '@/lib/providers/accent-provider';
+import { useAccent } from '@/components/providers/accent-provider';
 import {
 	ABOUT_SETTINGS_SECTIONS,
 	APP_VERSION,
