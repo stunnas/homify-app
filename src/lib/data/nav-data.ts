@@ -26,19 +26,9 @@ export const PROGRAMS: Program[] = [
 		logo: Home,
 	},
 	{
-		name: 'AI Bridge',
-		slug: 'ai-bridge',
-		logo: Bot,
-	},
-	{
 		name: 'Pomodoro Timer',
 		slug: 'pomodoro-timer',
 		logo: TimerReset,
-	},
-	{
-		name: 'Github Diagrams',
-		slug: 'github-diagrams',
-		logo: Map,
 	},
 ];
 
@@ -61,33 +51,6 @@ export const NAV_DATA: Record<Program['name'], NavItem[]> = {
 			],
 		},
 	],
-	'AI Bridge': [
-		{
-			title: 'Dashboard',
-			url: 'dashboard',
-			icon: LayoutDashboard,
-			isActive: true,
-			items: [
-				{
-					title: 'Agents',
-					url: 'agents',
-				},
-				{
-					title: 'Monitor',
-					url: 'monitor',
-				},
-				{
-					title: 'Prompt Engine',
-					url: 'prompt-engine',
-				},
-				{
-					title: 'Memory',
-					url: 'memory',
-				},
-			],
-		},
-	],
-
 	'Pomodoro Timer': [
 		{
 			title: 'Dashboard',
@@ -101,21 +64,7 @@ export const NAV_DATA: Record<Program['name'], NavItem[]> = {
 				},
 			],
 		},
-	],
-	'Github Diagrams': [
-		{
-			title: 'Dashboard',
-			url: 'dashboard',
-			icon: LayoutDashboard,
-			isActive: true,
-			items: [
-				{
-					title: 'Integrator',
-					url: 'integrator',
-				},
-			],
-		},
-	],
+	]
 };
 
 export function getDefaultRouteForProgram(programSlug: string): string {

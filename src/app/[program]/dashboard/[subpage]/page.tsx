@@ -33,30 +33,10 @@ export default function ProgramDashboardSubpage({
 			default:
 				notFound();
 		}
-	} else if (program === 'ai-bridge') {
-		switch (subpage) {
-			case 'agents':
-				return <div>Agents UI for AI Bridge</div>;
-			case 'monitor':
-				return <div>Monitor UI for AI Bridge</div>;
-			case 'prompt-engine':
-				return <div>Prompt Engine UI for AI Bridge</div>;
-			case 'memory':
-				return <div>Memory UI for AI Bridge</div>;
-			default:
-				notFound();
-		}
 	} else if (program === 'pomodoro-timer') {
 		switch (subpage) {
 			case 'sessions':
 				return <div>Sessions UI for Pomodoro</div>;
-			default:
-				notFound();
-		}
-	} else if (program === 'github-diagrams') {
-		switch (subpage) {
-			case'integrator':
-				return <div>Integrator UI for Github Diagrams</div>;
 			default:
 				notFound();
 		}
