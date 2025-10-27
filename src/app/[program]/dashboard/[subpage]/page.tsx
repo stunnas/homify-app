@@ -1,5 +1,3 @@
-// app/[program]/dashboard/[subpage]/page.tsx
-
 import { notFound } from 'next/navigation';
 import { PROGRAMS, NAV_DATA } from '@/lib/data/nav-data';
 
