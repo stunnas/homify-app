@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
+import { SoundyButton } from '@/components/ui/caa/sound/soundy-button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { ExternalLink, FileText, Copy } from 'lucide-react';
 import { useAccent } from '@/components/providers/accent-provider';
@@ -36,7 +36,7 @@ export function AboutSettings() {
 									<div className='text-sm font-medium'>Version</div>
 									<div className='text-sm flex items-center gap-2'>
 										{APP_VERSION.version}
-										<Button
+										<SoundyButton
 											variant='ghost'
 											size='icon'
 											className='h-6 w-6'
@@ -44,13 +44,13 @@ export function AboutSettings() {
 										>
 											<Copy className='h-3 w-3' />
 											<span className='sr-only'>Copy version</span>
-										</Button>
+										</SoundyButton>
 									</div>
 
 									<div className='text-sm font-medium'>Build</div>
 									<div className='text-sm flex items-center gap-2'>
 										{APP_VERSION.build}
-										<Button
+										<SoundyButton
 											variant='ghost'
 											size='icon'
 											className='h-6 w-6'
@@ -58,7 +58,7 @@ export function AboutSettings() {
 										>
 											<Copy className='h-3 w-3' />
 											<span className='sr-only'>Copy build number</span>
-										</Button>
+										</SoundyButton>
 									</div>
 								</div>
 							</div>
@@ -83,13 +83,13 @@ export function AboutSettings() {
 									</div>
 								</div>
 								{section.action && (
-									<Button
+									<SoundyButton
 										variant={`${currentAccent === 'default' ? 'outline' : 'accent'}`}
 										className='flex items-center gap-2 mt-2'
 									>
 										<FileText className='h-4 w-4' />
 										{section.action.label}
-									</Button>
+									</SoundyButton>
 								)}
 							</>
 						)}
@@ -97,7 +97,7 @@ export function AboutSettings() {
 						{section.type === 'links' && (
 							<div className='flex flex-col gap-2'>
 								{LICENSE_LINKS.map((link) => (
-									<Button
+									<SoundyButton
 										key={link.label}
 										variant='outline'
 										className='flex items-center justify-between w-full'
@@ -105,7 +105,7 @@ export function AboutSettings() {
 									>
 										<span>{link.label}</span>
 										<ExternalLink className='h-4 w-4' />
-									</Button>
+									</SoundyButton>
 								))}
 							</div>
 						)}

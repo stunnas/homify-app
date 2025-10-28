@@ -1,4 +1,5 @@
-import { Home, Bot, TimerReset, Map, LayoutDashboard } from 'lucide-react';
+import { HomePrograms } from '@/components/blocks/programs/home/home-programs';
+import { Home, Cctv, TimerReset, LayoutDashboard } from 'lucide-react';
 
 export interface Program {
 	name: string;
@@ -17,7 +18,13 @@ export interface NavItem {
 export interface NavSubItem {
 	title: string;
 	url: string;
+	codeblock?: React.ComponentType<SubpageComponentProps>;
 }
+
+export type SubpageComponentProps = {
+	programSlug: string;
+	subpageSlug: string;
+};
 
 export const PROGRAMS: Program[] = [
 	{
@@ -30,6 +37,11 @@ export const PROGRAMS: Program[] = [
 		slug: 'pomodoro-timer',
 		logo: TimerReset,
 	},
+	{
+		name: 'LLM Director',
+		slug: 'llm-director',
+		logo: Cctv,
+	},
 ];
 
 export const NAV_DATA: Record<Program['name'], NavItem[]> = {
@@ -41,8 +53,9 @@ export const NAV_DATA: Record<Program['name'], NavItem[]> = {
 			isActive: true,
 			items: [
 				{
-					title: 'Tools',
-					url: 'tools',
+					title: 'Programs',
+					url: 'programs',
+					codeblock: HomePrograms,
 				},
 				{
 					title: 'About',
@@ -64,7 +77,25 @@ export const NAV_DATA: Record<Program['name'], NavItem[]> = {
 				},
 			],
 		},
-	]
+	],
+	'LLM Director': [
+		{
+			title: 'Dashboard',
+			url: 'dashboard',
+			icon: LayoutDashboard,
+			isActive: true,
+			items: [
+				{
+					title: 'Projects',
+					url: 'projects',
+				},
+				{
+					title: 'Agents',
+					url: 'agents',
+				},
+			],
+		},
+	],
 };
 
 export function getDefaultRouteForProgram(programSlug: string): string {
