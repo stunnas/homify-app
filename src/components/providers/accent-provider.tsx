@@ -3,24 +3,24 @@
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import {
-	accentColorMap,
-	mutedAccentColorMap,
+        accentColorMap,
+        mutedAccentColorMap,
 } from '@/lib/data/settings/appearance-data';
 
 // Exposed context so other components can read the "currentAccent"
 interface AccentContextValue {
-	currentAccent: string | null;
-	setAccent: (accent: string) => void;
+        currentAccent: string | null;
+        setAccent: (accent: string) => void;
 }
 
 const AccentContext = createContext<AccentContextValue>({
-	currentAccent: 'default',
-	setAccent: () => {},
+        currentAccent: 'default',
+        setAccent: () => {},
 });
 
 function getStoredAccent() {
-	if (typeof window === 'undefined') return 'default';
-	return localStorage.getItem('accentColor') || 'default';
+        if (typeof window === 'undefined') return 'default';
+        return localStorage.getItem('accentColor') || 'default';
 }
 
 /**
@@ -28,78 +28,81 @@ function getStoredAccent() {
  * Otherwise remove them so :root / .dark handles it.
  */
 export function updateRootAccent(accent: string) {
-	if (typeof window !== 'undefined') {
-		localStorage.setItem('accentColor', accent);
-	}
-	if (typeof document === 'undefined') return;
+        if (typeof window !== 'undefined') {
+                localStorage.setItem('accentColor', accent);
+        }
+        if (typeof document === 'undefined') return;
 
-	const docEl = document.documentElement;
+        const docEl = document.documentElement;
 
-	if (accent === 'default') {
-		// remove overrides => use normal theme from globals.css
-		docEl.style.removeProperty('--accent');
-		docEl.style.removeProperty('--accent-foreground');
-		docEl.style.removeProperty('--muted-accent');
-		docEl.style.removeProperty('--muted-accent-foreground');
-		// also remove scrollbar overrides => fallback to :root / .dark
-		docEl.style.removeProperty('--scrollbar');
-		docEl.style.removeProperty('--scrollbar-foreground');
-		return;
-	}
+        if (accent === 'default') {
+                // remove overrides => use normal theme from globals.css
+                docEl.style.removeProperty('--accent');
+                docEl.style.removeProperty('--accent-foreground');
+                docEl.style.removeProperty('--muted-accent');
+                docEl.style.removeProperty('--muted-accent-foreground');
+                // also remove scrollbar overrides => fallback to :root / .dark
+                docEl.style.removeProperty('--scrollbar');
+                docEl.style.removeProperty('--scrollbar-foreground');
+                return;
+        }
 
-	// If accent is not "default," pick the custom HSL
-	const mainHsl = accentColorMap[accent] ?? accentColorMap.default;
-	const mutedHsl = mutedAccentColorMap[accent] ?? mutedAccentColorMap.default;
+        // If accent is not "default," pick the custom HSL
+        const mainHsl = accentColorMap[accent] ?? accentColorMap.default;
+        const mutedHsl =
+                mutedAccentColorMap[accent] ?? mutedAccentColorMap.default;
 
-	docEl.style.setProperty('--accent', mainHsl);
-	docEl.style.setProperty('--muted-accent', mutedHsl);
+        docEl.style.setProperty('--accent', mainHsl);
+        docEl.style.setProperty('--muted-accent', mutedHsl);
 
-	// Dynamic foreground (black or white)
-	const mainFg = pickForegroundForAccent(mainHsl);
-	const mutedFg = pickForegroundForAccent(mutedHsl);
-	docEl.style.setProperty('--accent-foreground', mainFg);
-	docEl.style.setProperty('--muted-accent-foreground', mutedFg);
+        // Dynamic foreground (black or white)
+        const mainFg = pickForegroundForAccent(mainHsl);
+        const mutedFg = pickForegroundForAccent(mutedHsl);
+        docEl.style.setProperty('--accent-foreground', mainFg);
+        docEl.style.setProperty('--muted-accent-foreground', mutedFg);
 
-	// If you want the scrollbar to match the main accent,
-	// set --scrollbar = mainHsl, --scrollbar-foreground = mainFg or something else
-	docEl.style.setProperty('--scrollbar', mainHsl);
-	docEl.style.setProperty('--scrollbar-foreground', mutedHsl);
+        // If you want the scrollbar to match the main accent,
+        // set --scrollbar = mainHsl, --scrollbar-foreground = mainFg or something else
+        docEl.style.setProperty('--scrollbar', mainHsl);
+        docEl.style.setProperty('--scrollbar-foreground', mutedHsl);
 }
 
 // Very rough check if HSL lightness > 70 => black text, else white
 function pickForegroundForAccent(hsl: string) {
-	const parts = hsl.trim().split(/\s+/);
-	if (parts.length < 3) return '0 0% 100%'; // fallback white
-	const lStr = parts[2].replace('%', '');
-	const lightness = Number(lStr);
-	return lightness > 70 ? '0 0% 0%' : '0 0% 100%';
+        const parts = hsl.trim().split(/\s+/);
+        if (parts.length < 3) return '0 0% 100%'; // fallback white
+        const lStr = parts[2].replace('%', '');
+        const lightness = Number(lStr);
+        return lightness > 70 ? '0 0% 0%' : '0 0% 100%';
 }
 
 export function AccentProvider({ children }: { children: React.ReactNode }) {
-	const [accent, setAccent] = useState<string | null>(null);
+        const [accent, setAccent] = useState<string | null>(null);
 
-	useEffect(() => {
-		const stored = getStoredAccent();
-		setAccent(stored);
-		updateRootAccent(stored);
-	}, []);
+        useEffect(() => {
+                const stored = getStoredAccent();
+                setAccent(stored);
+                updateRootAccent(stored);
+        }, []);
 
-	// Provide the accent in context so others can read it
-	const value: AccentContextValue = {
-		currentAccent: accent,
-		setAccent: (newAccent) => {
-			setAccent(newAccent);
-			updateRootAccent(newAccent);
-		},
-	};
+        // Provide the accent in context so others can read it
+        const value: AccentContextValue = {
+                currentAccent: accent,
+                setAccent: (newAccent) => {
+                        setAccent(newAccent);
+                        updateRootAccent(newAccent);
+                },
+        };
 
-	return (
-		<AccentContext.Provider value={value}>{children}</AccentContext.Provider>
-	);
+        return (
+                <AccentContext.Provider value={value}>
+                        {children}
+                </AccentContext.Provider>
+        );
 }
 
 export function useAccent() {
-	return useContext(AccentContext);
+        return useContext(AccentContext);
 }
 
 export const transitionClass = 'transition-colors duration-300 ease-in-out';
