@@ -20,7 +20,7 @@ import {
 	NAV_DATA,
 	getDefaultRouteForProgram,
 } from '@/lib/data/nav-data';
-import { SettingsDialog } from './footer/settings-dialog';
+
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 	const router = useRouter();
@@ -68,9 +68,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 					currentPath={pathname}
 				/>
 			</SidebarContent>
-			<SidebarFooter>
-				<SettingsDialog />
-			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
 	);

@@ -6,7 +6,7 @@ import { SidebarInset } from "@/components/ui/shadcn/sidebar";
 import { Separator } from "@/components/ui/shadcn/separator";
 import { DynamicBreadcrumbs } from "@/components/blocks/sidebar/content/dynamic-breadcrumbs";
 import { SoundySidebarTrigger } from "@/components/ui/caa/sound/soundy-sidebar";
-
+import { SettingsDialog } from "@/components/blocks/settings/settings-dialog";
 
 /**
  * ShellMain
@@ -21,6 +21,7 @@ export function ShellMain({ children }: { children: React.ReactNode }) {
       {/* Sticky header row (never scrolls away) */}
       <div className="sticky top-0 z-30 flex h-16 shrink-0 items-center border-b bg-background/80 px-4 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 transition-[height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <SoundySidebarTrigger />
+        <SettingsDialog />
         <Separator orientation="vertical" className="mx-2 h-4" />
         <DynamicBreadcrumbs />
       </div>
