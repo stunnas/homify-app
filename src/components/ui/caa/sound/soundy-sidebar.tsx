@@ -6,6 +6,11 @@ import {
   SidebarMenuSubButton as BaseSidebarMenuSubButton,
   useSidebar,
 } from "@/components/ui/shadcn/sidebar";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/shadcn/tooltip";
 import { cn } from "@/lib/utils";
 import {
   useSoundInteractions,
@@ -133,6 +138,9 @@ SoundySidebarMenuSubButton.displayName = "SoundySidebarMenuSubButton";
 export interface SoundySidebarTriggerProps
   extends React.ComponentProps<typeof SoundyButton> {
   soundPreset?: SoundPreset | false;
+  tooltip?: React.ReactNode;
+  tooltipSide?: React.ComponentProps<typeof TooltipContent>["side"];
+  tooltipAlign?: React.ComponentProps<typeof TooltipContent>["align"];
 }
 /**
  * SoundySidebarTrigger
@@ -144,46 +152,75 @@ export interface SoundySidebarTriggerProps
 export const SoundySidebarTrigger = React.forwardRef<
   React.ElementRef<typeof SoundyButton>,
   SoundySidebarTriggerProps
->(({ className, onClick, soundPreset = "sidebar", ...props }, ref) => {
-  const { toggleSidebar } = useSidebar();
+>(
+  (
+    {
+      className,
+      onClick,
+      soundPreset = "sidebar",
+      tooltip,
+      tooltipSide = "top",
+      tooltipAlign = "center",
+      ...props
+    },
+    ref
+  ) => {
+    const { toggleSidebar, state } = useSidebar();
+    // state is typically "expanded" | "collapsed"
 
-  const hasSound = soundPreset !== false;
-  const {
-    onHover,
-    onFocus: onFocusSound,
-    wrapClick,
-  } = useSoundInteractions(hasSound ? (soundPreset as SoundPreset) : undefined);
+    const hasSound = soundPreset !== false;
+    const {
+      onHover,
+      onFocus: onFocusSound,
+      wrapClick,
+    } = useSoundInteractions(
+      hasSound ? (soundPreset as SoundPreset) : undefined
+    );
 
-  return (
-    <SoundyButton
-      ref={ref}
-      data-sidebar="trigger"
-      variant="ghost"
-      size="icon"
-      className={cn("h-7 w-7", className, "cursor-target")}
-      // hover sound
-      onMouseEnter={(e) => {
-        if (hasSound) onHover();
-        props.onMouseEnter?.(e);
-      }}
-      // keyboard focus sound
-      onFocus={(e) => {
-        if (hasSound) onFocusSound();
-        props.onFocus?.(e);
-      }}
-      // click sound, then toggle, then user onClick
-      onClick={wrapClick<React.MouseEvent<any>>((e) => {
-        // 1. allow user-provided onClick
-        onClick?.(e);
-        // 2. then toggle sidebar
-        toggleSidebar();
-      })}
-      {...props}
-    >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
-    </SoundyButton>
-  );
-});
+    // if caller didn't supply `tooltip`, we auto-label based on current state
+    const tooltipLabel =
+      tooltip ?? (state === "collapsed" ? "Open Sidebar" : "Hide Sidebar");
+
+    // soundy button core
+    const coreButton = (
+      <SoundyButton
+        ref={ref}
+        data-sidebar="trigger"
+        variant="ghost"
+        size="icon"
+        className={cn("h-7 w-7", className, "cursor-target")}
+        onMouseEnter={(e) => {
+          if (hasSound) onHover();
+          props.onMouseEnter?.(e);
+        }}
+        onFocus={(e) => {
+          if (hasSound) onFocusSound();
+          props.onFocus?.(e);
+        }}
+        onClick={wrapClick<React.MouseEvent<any>>((e) => {
+          // dev's onClick first
+          onClick?.(e);
+          // then actually toggle sidebar
+          toggleSidebar();
+        })}
+        {...props}
+      >
+        <PanelLeft />
+        <span className="sr-only">
+          {state === "collapsed" ? "Open Sidebar" : "Hide Sidebar"}
+        </span>
+      </SoundyButton>
+    );
+
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{coreButton}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align={tooltipAlign}>
+          {tooltipLabel}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+);
 
 SoundySidebarTrigger.displayName = "SoundySidebarTrigger";
