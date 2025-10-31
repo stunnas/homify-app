@@ -52,11 +52,7 @@ export function LogsSettings() {
                 }
               />
               <Label htmlFor={section.id}>
-                {section.id === "verboseLogs"
-                  ? "Enable verbose logging"
-                  : section.id === "consoleOverlay"
-                    ? "Show console overlay"
-                    : "Save logs to file"}
+                {section.label}
               </Label>
             </div>
 

@@ -16,16 +16,6 @@ export const STARTUP_OPTIONS = [
 	},
 ];
 
-export const AGENT_OPTIONS = [
-	{ id: 'claude', label: 'Claude' },
-	{ id: 'gpt', label: 'ChatGPT' },
-];
-
-export const MODE_OPTIONS = [
-	{ id: 'new', label: 'New conversation' },
-	{ id: 'concurrent', label: 'Concurrent conversation' },
-];
-
 export const GENERAL_SETTINGS_SECTIONS = [
 	{
 		id: 'startup',
@@ -34,21 +24,5 @@ export const GENERAL_SETTINGS_SECTIONS = [
 		type: 'radio',
 		options: STARTUP_OPTIONS,
 		defaultValue: 'minimized',
-	},
-	{
-		id: 'defaultAgent',
-		title: 'Default agent (Claude / GPT)',
-		description: 'Select which AI agent to use by default',
-		type: 'select',
-		options: AGENT_OPTIONS,
-		defaultValue: 'claude',
-	},
-	{
-		id: 'defaultMode',
-		title: 'Default mode (new/concurrent)',
-		description: 'Choose the default conversation mode',
-		type: 'radio',
-		options: MODE_OPTIONS,
-		defaultValue: 'concurrent',
 	},
 ];

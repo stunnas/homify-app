@@ -1,15 +1,9 @@
 export const LOGS_SETTINGS_SECTIONS = [
 	{
 		id: 'verboseLogs',
-		title: 'Enable verbose logs',
+		title: 'Verbose logs',
 		description: 'Show detailed logs for debugging purposes',
-		type: 'switch',
-		defaultValue: false,
-	},
-	{
-		id: 'consoleOverlay',
-		title: 'Show console overlay',
-		description: 'Display a console overlay for real-time log viewing',
+		label: 'Enable verbose logging',
 		type: 'switch',
 		defaultValue: false,
 	},
@@ -17,6 +11,7 @@ export const LOGS_SETTINGS_SECTIONS = [
 		id: 'saveLogsToFile',
 		title: 'Save all logs to file',
 		description: 'Automatically save logs to a file on disk',
+		label: 'Save logs to file',
 		type: 'switch',
 		defaultValue: false,
 		hasAction: true,

@@ -40,11 +40,7 @@ export function NotificationsSettings() {
 								}
 							/>
 							<Label htmlFor={section.id}>
-								{section.title === 'Desktop notifications'
-									? 'Enable desktop notifications'
-									: section.title === 'Error alerts'
-									? 'Show error alerts'
-									: 'Enable idle alerts'}
+								{section.label}
 							</Label>
 						</div>
 					</div>

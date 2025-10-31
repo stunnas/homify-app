@@ -1,8 +1,9 @@
 import { HomePrograms } from "@/components/blocks/programs/home/home-programs";
+import { HomeAbout } from "@/components/blocks/programs/home/home-about";
 import {
   Home,
   FolderCode,
-  Cctv,
+  Film,
   Videotape,
   Bot,
   CalendarCheck2,
@@ -51,7 +52,7 @@ export const PROGRAMS: Program[] = [
   {
     name: "LLM Director",
     slug: "llm-director",
-    logo: Cctv,
+    logo: Film,
   },
 ];
 
@@ -73,6 +74,7 @@ export const NAV_DATA: Record<Program["name"], NavItem[]> = {
           title: "About",
           url: "about",
           icon: BadgeInfo,
+          codeblock: HomeAbout,
         },
       ],
     },
