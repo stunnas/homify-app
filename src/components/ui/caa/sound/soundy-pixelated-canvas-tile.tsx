@@ -27,15 +27,9 @@ export interface SoundyPixelatedCanvasTileProps
   src?: string;
   srcDark?: string;
   srcLight?: string;
-
-  /** Optional frame visual override */
-  frameClassName?: string;
-
-  /** Optional extra DOM attributes for outer <div> */
-  outerProps?: React.HTMLAttributes<HTMLDivElement>;
-
-  /** Enables sound effects ("tile", "button", etc.) */
-  preset?: SoundPreset | false;
+  frameClassName?: string; // Optional frame visual override
+  outerProps?: React.HTMLAttributes<HTMLDivElement>; // Optional extra DOM attributes for outer <div>
+  preset?: SoundPreset | false; //Enables sound effects ("tile", "button", etc.)
 }
 
 export const SoundyPixelatedCanvasTile = React.forwardRef<
