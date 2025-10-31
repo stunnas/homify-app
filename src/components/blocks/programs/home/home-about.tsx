@@ -8,14 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/shadcn/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/shadcn/tabs";
+import { Tabs, TabsContent, TabsList } from "@/components/ui/shadcn/tabs";
 import { SoundyButton } from "@/components/ui/caa/sound/soundy-button";
-import { PixelatedCanvas } from "@/components/ui/caa/pixelated-canvas";
+import { SoundyTabsTrigger } from "@/components/ui/caa/sound/soundy-tabs-trigger";
+import { SoundyPixelatedCanvasTile } from "@/components/ui/caa/sound/soundy-pixelated-canvas-tile";
 import { cn } from "@/lib/utils";
 import type { SubpageComponentProps } from "@/lib/data/nav-data";
 import {
@@ -29,8 +25,6 @@ import {
   TAB_ORDER,
   type TabKey,
 } from "@/lib/data/programs/home-about-data";
-import { useTheme } from "next-themes";
-import { useBoxSize } from "@/hooks/use-box-size";
 
 /* ---------- tiny presentational helpers ---------- */
 
@@ -101,47 +95,6 @@ function ProgramCard({
   );
 }
 
-function CanvasFrame() {
-  const { ref, w, h } = useBoxSize();
-  const { resolvedTheme } = useTheme();
-  return (
-    <div
-      ref={ref}
-      className="relative flex-1 rounded-xl overflow-hidden border border-border shadow-lg bg-gradient-to-br from-primary/10 via-background to-accent/10"
-    >
-      {w > 0 && h > 0 && (
-        <PixelatedCanvas
-          src={
-            resolvedTheme === "dark"
-              ? "/images/icon-dark.png"
-              : "/images/icon-light.png"
-          }
-          width={w}
-          height={h}
-          objectFit="cover"
-          padding={72}
-          cellSize={3}
-          dotScale={0.9}
-          shape="circle"
-          backgroundColor="transparent"
-          dropoutStrength={0.1}
-          interactive
-          distortionStrength={10}
-          distortionRadius={80}
-          distortionMode="swirl"
-          followSpeed={0.2}
-          jitterStrength={5}
-          jitterSpeed={4}
-          sampleAverage
-          tintColor={resolvedTheme === "dark" ? "#ffffff" : "#000000"}
-          tintStrength={0.1}
-          className="absolute inset-0 cursor-target"
-        />
-      )}
-    </div>
-  );
-}
-
 /* ---------- page ---------- */
 
 export function HomeAbout({}: SubpageComponentProps) {
@@ -166,13 +119,14 @@ export function HomeAbout({}: SubpageComponentProps) {
           >
             <TabsList className="flex w-full flex-wrap gap-1 lg:w-auto lg:flex-nowrap lg:gap-0 rounded-md border border-border bg-card/40 px-1 py-1">
               {TAB_ORDER.map((k) => (
-                <TabsTrigger
+                <SoundyTabsTrigger
                   key={k}
                   value={k}
+                  preset="button"
                   className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground flex-1 rounded-sm px-3 py-1 text-xs lg:text-sm"
                 >
                   {TABS[k].label}
-                </TabsTrigger>
+                </SoundyTabsTrigger>
               ))}
             </TabsList>
           </Tabs>
@@ -184,8 +138,12 @@ export function HomeAbout({}: SubpageComponentProps) {
         <div className="grid gap-6 lg:grid-cols-3 h-[70vh] min-h-0">
           {/* Left panel */}
           <div className="lg:col-span-1 min-h-0">
-            <div className="h-full rounded-xl border border-border bg-gradient-to-br from-primary/[0.25] via-background to-accent/[0.25] flex flex-col">
-              <CanvasFrame />
+            <div className="h-full rounded-xl border border-border bg-gradient-to-br from-primary/[0.25] via-background to-accent/[0.25]">
+              <SoundyPixelatedCanvasTile
+                srcDark="/images/icon-dark.png"
+                srcLight="/images/icon-light.png"
+                preset="tile"
+              />
             </div>
           </div>
 
