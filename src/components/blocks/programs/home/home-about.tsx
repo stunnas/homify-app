@@ -113,7 +113,7 @@ function CanvasFrame() {
         <PixelatedCanvas
           src={
             resolvedTheme === "dark"
-              ? "/images/icon.png"
+              ? "/images/icon-dark.png"
               : "/images/icon-light.png"
           }
           width={w}
