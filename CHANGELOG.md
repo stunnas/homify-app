@@ -1,0 +1,4 @@
+- Sound system
+- Global "Soundy" UI
+- Target cursor per selectable UI item
+- Electric borders per selectable program at "Home". 
